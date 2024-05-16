@@ -13,22 +13,31 @@
       const { useState } = React;
       
       const App = () => {
-        // const [name, setName] = useState("");
+        const [user, setUser] = useState({name: "", age: null});
+
         const handleSubmit = (event) => {
+          //stop form from refreshing
           event.preventDefault()
           const name = event.currentTarget.elements.nameInput.value;
-          $.getJSON(`https://api.agify.io?name=${name}`, function (data) {
-            console.log(data)
-          });
+
+          // prevent second request for the same name
+          if (user.name !== event.currentTarget.elements.nameInput.value) {
+            $.getJSON(`https://api.agify.io?name=${name}`, function (data) {
+              console.log(data)
+              setUser({ ...data })
+            });
+          }
         }
 
         return (
           <div>
             <Form onSubmit={handleSubmit} />
+            <UserInfo name={user.name} age={user.age}/>
           </div>
         );
       }
 
+      // form component
       const Form = ({onSubmit}) => {
         return (
           <form onSubmit={onSubmit}>
@@ -39,6 +48,17 @@
               Submit
             </button>
           </form>
+        );
+      }
+
+      // user info component
+      const UserInfo = ({name, age}) => {
+        // added simple text color to focus the user on the age field
+        return (
+          <div>
+            <div>Name: {name}</div>
+            <div style={{color: "red"}}>Age: {age}</div>
+          </div>
         );
       }
 
