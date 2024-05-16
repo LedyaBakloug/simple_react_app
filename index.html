@@ -11,26 +11,29 @@
     <div id="root"></div>
     <script type="text/babel">
       const { useState } = React;
-
-      $.getJSON("https://api.agify.io?name=michael", function (data) {
-        console.log(data)
-      });
-
+      
       const App = () => {
+        // const [name, setName] = useState("");
+        const handleSubmit = (event) => {
+          event.preventDefault()
+          const name = event.currentTarget.elements.nameInput.value;
+          $.getJSON(`https://api.agify.io?name=${name}`, function (data) {
+            console.log(data)
+          });
+        }
+
         return (
           <div>
-            <Form />
+            <Form onSubmit={handleSubmit} />
           </div>
         );
       }
 
-      const Form = ({ action }) => {
-        const [name, setName] = useState("");
-
+      const Form = ({onSubmit}) => {
         return (
-          <form action={action}>
+          <form onSubmit={onSubmit}>
             <label>
-              Enter your name: <input/>
+              Enter your name: <input id="nameInput"/>
             </label>
             <button type="submit">
               Submit
