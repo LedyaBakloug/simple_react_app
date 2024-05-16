@@ -11,8 +11,32 @@
     <div id="root"></div>
     <script type="text/babel">
       const { useState } = React;
+
+      $.getJSON("https://api.agify.io?name=michael", function (data) {
+        console.log(data)
+      });
+
       const App = () => {
-        return (<div>Implement me!</div>);
+        return (
+          <div>
+            <Form />
+          </div>
+        );
+      }
+
+      const Form = ({ action }) => {
+        const [name, setName] = useState("");
+
+        return (
+          <form action={action}>
+            <label>
+              Enter your name: <input/>
+            </label>
+            <button type="submit">
+              Submit
+            </button>
+          </form>
+        );
       }
 
       ReactDOM.render(<App />, document.querySelector('#root'));
